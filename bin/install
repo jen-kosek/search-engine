@@ -1,0 +1,25 @@
+#!/bin/bash
+# Install tool chain for P5
+
+# Stop on errors, print commands
+set -Eeuo pipefail
+set -x
+
+# Create a Python virtual environment
+python3 -m venv env
+source env/bin/activate
+
+# Include if running on CEAN
+# mkdir -p tmp
+# export TMPDIR=tmp
+
+# Install back end
+pip install -r index/requirements.txt
+pip install -e index
+pip install -r search/requirements.txt
+pip install -e search
+
+# Install the hadoop implementation
+pushd $VIRTUAL_ENV/bin
+ln -sf ../../tests/utils/hadoop.py hadoop
+popd
