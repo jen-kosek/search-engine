@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Reduce 0."""
+"""Reduce 1."""
 
 import sys
 import itertools
 
 
 def reduce_one_group(key, group):
-    total = 0
+    # Cacluate and print the frequency of the word in the document
+    tf = 0
     for line in group:
-        total += line.partition("\t")[1]
-    print(total)
+        tf += line.partition("\t")[1]
+    print(f"{key}\t{tf}")
 
 
 def keyfunc(line):

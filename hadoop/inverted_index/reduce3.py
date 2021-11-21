@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
-"""Reduce 0."""
+"""Reduce 3."""
 
 import sys
 import itertools
+import math
 
 
 def reduce_one_group(key, group):
-    total = 0
+    group = list(group)
+    norm_factor = 0
     for line in group:
-        total += line.partition("\t")[1]
-    print(total)
+        _, _, frequency, inverse_doc_freq = line.split()
+        norm_factor += math.pow(frequency * inverse_doc_freq, 2)
+    norm_factor = math.sqrt(norm_factor)
+
+    for line in group:
+        doc_id, word, frequency, inverse_doc_freq = line.split()
+        print(f"{word}\t{inverse_doc_freq} {doc_id} {frequency} {norm_factor}")
+    
 
 
 def keyfunc(line):

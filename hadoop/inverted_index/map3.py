@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Map 0."""
+"""Map 3."""
 import sys
+import re
 
 
 for line in sys.stdin:
-    print("num_docs\t1")
+    print(line)
