@@ -7,10 +7,11 @@ import itertools
 
 def reduce_one_group(key, group):
     # Cacluate and print the frequency of the word in the document
-    tf = 0
+    frequency = 0
     for line in group:
-        tf += line.partition("\t")[1]
-    print(f"{key}\t{tf}")
+        _, value = line.split("\t")
+        frequency += int(value)
+    print(f"{key}\t{frequency}")
 
 
 def keyfunc(line):

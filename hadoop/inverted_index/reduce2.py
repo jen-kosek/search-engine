@@ -5,15 +5,14 @@ import sys
 import itertools
 import math
 
-total_num_docs = 0
 
-def reduce_one_group(key, group):
+def reduce_one_group(key, group, total_num_docs):
     group = list(group)
     num_docs = 0
     for line in group:
         num_docs += 1
     
-    inverse_doc_freq = math.log(total_num_docs/num_docs)
+    inverse_doc_freq = math.log10(total_num_docs/num_docs)
 
     for line in group:
         word, doc_id, frequency = line.split()
@@ -30,11 +29,10 @@ def main():
     """Divide sorted lines into groups that share a key."""
     # Get num documents
     with open("total_document_count.txt", "r") as file:
-        num_docs = file.readline.split()[0]
-
+        total_num_docs = int(file.readline())
 
     for key, group in itertools.groupby(sys.stdin, keyfunc):
-        reduce_one_group(key, group)
+        reduce_one_group(key, group, total_num_docs)
 
 
 if __name__ == "__main__":

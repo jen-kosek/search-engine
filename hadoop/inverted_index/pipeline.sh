@@ -54,5 +54,27 @@ hadoop \
   -mapper ./map2.py \
   -reducer ./reduce2.py
 
-# REMINDER: don't forget to set -numReduceTasks in your last stage.  You'll
-# need this to generate the correct number of inverted index segments.
+# Job 3
+hadoop \
+  jar ../hadoop-streaming-2.7.2.jar \
+  -input output2 \
+  -output output3 \
+  -mapper ./map3.py \
+  -reducer ./reduce3.py
+
+# Job 4
+hadoop \
+  jar ../hadoop-streaming-2.7.2.jar \
+  -input output3 \
+  -output output4 \
+  -mapper ./map4.py \
+  -reducer ./reduce4.py
+
+# Job 5 - final
+hadoop \
+  jar ../hadoop-streaming-2.7.2.jar \
+  -input output4 \
+  -output output \
+  -numReduceTasks 3 \
+  -mapper ./map5.py \
+  -reducer ./reduce5.py

@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Reduce 0."""
+"""Reduce 4."""
 
 import sys
 import itertools
 
 
-def reduce_one_group(key, group):
-    total = 0
+def reduce_one_group(key, group):    
+    # Just print the inverted index info 
     for line in group:
-        _, value = line.split("\t")
-        total += int(value)
-    print(total)
+        _, output= line.split("\t")
+        print(output.strip())
 
 
 def keyfunc(line):

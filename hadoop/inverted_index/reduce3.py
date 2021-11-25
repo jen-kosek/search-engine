@@ -11,13 +11,11 @@ def reduce_one_group(key, group):
     norm_factor = 0
     for line in group:
         _, _, frequency, inverse_doc_freq = line.split()
-        norm_factor += math.pow(frequency * inverse_doc_freq, 2)
-    norm_factor = math.sqrt(norm_factor)
+        norm_factor += math.pow(float(frequency) * float(inverse_doc_freq), 2)
 
     for line in group:
         doc_id, word, frequency, inverse_doc_freq = line.split()
-        print(f"{word}\t{inverse_doc_freq} {doc_id} {frequency} {norm_factor}")
-    
+        print(f"{word} {int(doc_id) % 3}\t{inverse_doc_freq} {doc_id} {frequency} {norm_factor}")
 
 
 def keyfunc(line):

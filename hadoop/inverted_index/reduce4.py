@@ -3,22 +3,20 @@
 
 import sys
 import itertools
-import math
 
 
 def reduce_one_group(key, group):
     # Get word and inverse doc frequency form first line
-    word, inverse_doc_freq, doc_id, frequency, norm_factor= group.next().split()
+    word, out_num, inverse_doc_freq, doc_id, frequency, norm_factor= next(group).split()
     output = word + " " + inverse_doc_freq + " " + doc_id + " " + frequency + " " + norm_factor + " "
     
     # Just get doc specific info from rest of lines
     for line in group:
-        _, _, doc_id, frequency, norm_factor= line.split()
+        _, _, _, doc_id, frequency, norm_factor= line.split()
         output += doc_id + " " + frequency + " " + norm_factor + " "
     
-    # Print line in inverted index
-    print(output)
-    
+    # Print key = docid % 3, value = line in inverted index
+    print(f"{out_num}\t {output}")
 
 
 def keyfunc(line):
