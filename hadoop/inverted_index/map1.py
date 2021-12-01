@@ -8,7 +8,7 @@ csv.field_size_limit(sys.maxsize)
 
 for line in sys.stdin:
     # Clean the input
-    doc_id, title, body = line.split("\",\"")
+    doc_id, title, body = line.split(",")
     text = title.strip("\"") + " " + body.strip("\"")
     text = re.sub(r"[^a-zA-Z0-9 ]+", "", text).casefold()
     doc_id = doc_id.strip("\"")
