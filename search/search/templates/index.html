@@ -8,8 +8,8 @@
     </head>
 
     <!-- entire page -->
-    <div class="feed">
-        <body id="page">
+    <body id="page">
+        <div class="feed">
             <!-- title -->
             <div class="ask485" style="text-align:left;">
                 <p>ask485</p>
@@ -21,14 +21,14 @@
 
                     <!-- search bar -->
                     <div class="search_bar" style="text-align:center;">
-                        <input type="text" name="q" id="q" value=document.getElementById(q)/>
+                        <input type="text" name="q" id="q" value="{{ query }}"/>
                     </div>
 
                     <!-- pagerank title -->
                     <div class="pagerank_weight" style="text-align:right;">Pagerank Weight</div>
 
                     <!-- slider -->
-                    <div><input type="range" name="w" min="0" max="1" value="0.01"/></div>
+                    <div><input type="range" name="w" min="0" max="1" step="0.01" value="{{ weight }}"/></div>
 
                     <!-- search button -->
                     <input type="submit" value="Search"/>
@@ -36,9 +36,10 @@
             </div>
 
             <!-- search results -->
+            {% if show_results %}
             <div class="docs">
                 <!-- if no results, display message -->
-                {% if docs|length %}
+                {% if not docs|length > 0 %}
                     <div class="no_results">No search results found!</div>
 
                 <!-- otherwise, show top docs -->
@@ -46,30 +47,29 @@
                     {% for doc in docs %}
 
                         <!-- show url -->
-                        {% if doc.url is defined %}
-                            <a class="doc_url">
-                                <a href="{% doc.url %}">
-                            </a>
-                        {% else }
-                            No url available.
+                        {% if doc.url %}
+                            <a class="doc_url" href="{{ doc.url }}">{{ doc.url }}</a>
+                        {% else %}
+                            <a class="doc_url" href="">No url available</a>
                         {% endif %}
                         
                         <!-- show title -->
                         <div class="doc_title">
-                            {% doc.title %}
+                            {{ doc.title }}
                         </div>
 
                         <!-- show summary -->
-                        {% if doc.summary is defined}
-                            <div class="doc_summary">
-                                {% doc.summary %}
-                            </div>
-                        {% else }
-                            No summary available.
+                        <div class="doc_summary">
+                        {% if doc.summary %}
+                            {{ doc.summary }}
+                        {% else %}
+                            No summary available
                         {% endif %}
+                        </div>
                     {% endfor %}
                 {% endif %}
             </div>
-        </body>
-    </div>
+            {% endif %}
+        </div>
+    </body>
 </html>
