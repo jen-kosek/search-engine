@@ -31,17 +31,19 @@ case $1 in
     fi
 
     # Check that index servers are running
-    if [ ./bin/index status ]
+    if [ ./bin/index status = "index server running" ]
     then
         echo "Error: index server is not running"
         echo "Try ./bin/index start"
     # Check that search server is not already running
-    elif [ ]
+    elif [ pgrep -f "flask run --host 0.0.0.0 --port 8000" ]
         echo "Error: search server is already running"
-    else
-        echo "Error: can't find search database search/search/var/index.sqlite3"
-        echo "Try: ./bin/indexdb create"
         exit 1
+    else
+        echo "starting search server ..."
+        mkdir -p var/log
+        rm -f var/log/search.log
+        FLASK_APP=search flask run --host 0.0.0.0 --port 8000 &> var/log/search.log &
     fi
     ;;
   "stop")
