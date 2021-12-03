@@ -1,3 +1,4 @@
+"""Config for search server."""
 import pathlib
 
 SEARCH_INDEX_SEGMENT_API_URLS = [

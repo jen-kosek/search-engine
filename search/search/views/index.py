@@ -5,19 +5,20 @@ URLs include:
 /
 """
 
-import flask
-import search
-import requests
 from threading import Thread
 import time
 import heapq
+import flask
+import requests
+import search
 
 
 @search.app.route('/', methods=["GET"])
 def show_index():
-    context = {"docs": [], 
-               "query": '', 
-               "weight": "0.5", 
+    """Show main page."""
+    context = {"docs": [],
+               "query": '',
+               "weight": "0.5",
                "show_results": False}
 
     # First load
@@ -51,7 +52,7 @@ def request_hits(url, query, weight, hits):
     response = requests.get(url, params=payload)
     response_dict = response.json()
 
-    # Add hits to list 
+    # Add hits to list
     for hit in response_dict["hits"]:
         hits.append(hit)
 
@@ -60,12 +61,14 @@ def get_hits(query, weight):
     """Get hits from index servers and return top 10 hits."""
     # List to store hits
     hits = []
-    for index, _ in enumerate(search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"]):
+    for index, _ in enumerate(
+            search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"]):
         hits.append([])
 
     # Make a thread for each server request
     threads = []
-    for index, server in enumerate(search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"]):
+    for index, server in enumerate(
+            search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"]):
         threads.append(Thread(target=request_hits,
                        args=(server, query, weight, hits[index], )))
 
@@ -83,15 +86,16 @@ def get_hits(query, weight):
         time.sleep(1)
 
     # Sort by score and return top 10 docids
-    merged_hits = heapq.merge(*hits, key=lambda x: (x["score"], -x["docid"]), reverse=True)
-    top_10 = [hit for hit in merged_hits][:10]
+    merged_hits = heapq.merge(*hits, key=lambda x: (x["score"],
+                              -x["docid"]), reverse=True)
+    top_10 = list(merged_hits)[:10]
     return [hit["docid"] for hit in top_10]
 
 
 def get_info(docs):
     """Query the db and return info on the given docs."""
     info = []
-    
+
     # Connect to database
     connection = search.model.get_db()
 
