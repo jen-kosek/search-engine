@@ -22,10 +22,12 @@ fi
 case $1 in
   "start")
     # Check that index servers are running
-    if [ ./bin/index status == "index server running" ]
+    ./bin/index "status"
+    if [ $? != 0 ]
     then
         echo "Error: index server is not running"
         echo "Try ./bin/index start"
+        exit 1
     # Check that search server is not already running
     elif pgrep -f "flask run --host 0.0.0.0 --port 8000"
     then
@@ -43,11 +45,12 @@ case $1 in
     pkill -f 'flask run --host 0.0.0.0 --port 8000' || true
     ;;
   "status")
-    if  pgrep -f "flask run --host 0.0.0.0 --port 8000"
+    if pgrep -f "flask run --host 0.0.0.0 --port 8000"
     then
         echo "search server running"
     else
         echo "search server stopped"
+        exit 1
     fi
     ;;
   "restart")
