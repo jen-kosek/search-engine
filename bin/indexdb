@@ -10,7 +10,7 @@ set -Eeuo pipefail
 
 # Command line options
 usage() {
-  echo "Usage: $0 (create|distroy|reset)"
+  echo "Usage: $0 (create|destroy|reset)"
 }
 
 if [ $# -ne 1 ]; then
@@ -35,8 +35,8 @@ case $1 in
     rm -f search/search/var/index.sqlite3
     ;;
   "reset")
-    ./$0 destroy
-    ./$0 create
+    $0 destroy
+    $0 create
     ;;
   *)
     usage

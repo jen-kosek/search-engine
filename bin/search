@@ -21,22 +21,14 @@ fi
 # Parse argument
 case $1 in
   "start")
-    # Stop if one or more Index servers is already running
-    if [ pgrep -f "flask run --host 0.0.0.0 --port 9000" ] ||
-       [ pgrep -f "flask run --host 0.0.0.0 --port 9001" ] ||
-       [ pgrep -f "flask run --host 0.0.0.0 --port 9002" ]
-    then
-        echo "Error: index server is already running"
-        exit 1
-    fi
-
     # Check that index servers are running
-    if [ ./bin/index status = "index server running" ]
+    if [ ./bin/index status == "index server running" ]
     then
         echo "Error: index server is not running"
         echo "Try ./bin/index start"
     # Check that search server is not already running
-    elif [ pgrep -f "flask run --host 0.0.0.0 --port 8000" ]
+    elif pgrep -f "flask run --host 0.0.0.0 --port 8000"
+    then
         echo "Error: search server is already running"
         exit 1
     else
@@ -51,15 +43,16 @@ case $1 in
     pkill -f 'flask run --host 0.0.0.0 --port 8000' || true
     ;;
   "status")
-    if [ pgrep -f "flask run --host 0.0.0.0 --port 8000" ]
+    if  pgrep -f "flask run --host 0.0.0.0 --port 8000"
     then
         echo "search server running"
     else
         echo "search server stopped"
     fi
+    ;;
   "restart")
-    ./$0 stop
-    ./$0 start
+    $0 stop
+    $0 start
     ;;
   *)
     usage

@@ -22,9 +22,9 @@ fi
 case $1 in
   "start")
     # Stop if one or more Index servers is already running
-    if [ pgrep -f "flask run --host 0.0.0.0 --port 9000" ] ||
-       [ pgrep -f "flask run --host 0.0.0.0 --port 9001" ] ||
-       [ pgrep -f "flask run --host 0.0.0.0 --port 9002" ]
+    if  pgrep -f "flask run --host 0.0.0.0 --port 9000" ||
+        pgrep -f "flask run --host 0.0.0.0 --port 9001" ||
+        pgrep -f "flask run --host 0.0.0.0 --port 9002" 
     then
         echo "Error: index server is already running"
         exit 1
@@ -65,9 +65,10 @@ case $1 in
     echo "index server error: found ${NPROCS} processes, expected 3"
     exit 2
     fi
+    ;;
   "restart")
-    ./$0 stop
-    ./$0 start
+    $0 stop
+    $0 start
     ;;
   *)
     usage
